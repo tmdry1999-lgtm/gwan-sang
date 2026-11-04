@@ -1,0 +1,23 @@
+{
+  "_note": "wiki/gwansang/measurement-map.md 의 초안 번호. 실제 영상으로 검증 후 고칠 것.",
+  "faceWidth": [234, 454],
+  "items": {
+    "m01": { "kind": "dist", "a": 10, "b": 152, "norm": "faceWidth" },
+    "m02": { "kind": "dist", "a": 54, "b": 284, "norm": "faceWidth" },
+    "m03": { "kind": "dist", "a": 172, "b": 397, "norm": "faceWidth" },
+    "m04": { "kind": "dist", "a": 10, "b": 9, "norm": "faceLength" },
+    "m05": { "kind": "dist", "a": 9, "b": 2, "norm": "faceLength" },
+    "m06": { "kind": "dist", "a": 2, "b": 152, "norm": "faceLength" },
+    "m07": { "kind": "dist", "a": 55, "b": 285, "norm": "faceWidth" },
+    "m08": { "kind": "pairDist", "pairs": [[70, 55], [300, 285]], "norm": "faceWidth" },
+    "m09": { "kind": "pairDist", "pairs": [[33, 133], [362, 263]], "norm": "faceWidth" },
+    "m10": { "kind": "eyeOpen", "top": 159, "bottom": 145, "corners": [33, 133] },
+    "m11": { "kind": "dist", "a": 159, "b": 105, "norm": "faceWidth" },
+    "m12": { "kind": "eyeTilt", "pairs": [[33, 133], [263, 362]] },
+    "m13": { "kind": "dist", "a": 168, "b": 1, "norm": "faceLength" },
+    "m14": { "kind": "dist", "a": 129, "b": 358, "norm": "faceWidth" },
+    "m15": { "kind": "dist", "a": 61, "b": 291, "norm": "faceWidth" },
+    "m16": { "kind": "mouthLift", "corners": [61, 291], "center": [13, 14] },
+    "m17": { "kind": "angle", "a": 172, "vertex": 152, "b": 397 }
+  }
+}
