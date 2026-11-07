@@ -13,7 +13,7 @@ import { isFrontal, measureFrame, medianOf } from './measure/measure';
 import { writeReading } from './llm/ollama';
 import { buildResultUrl, toPayload } from './share/payload';
 import { captureFrame, drawSnapshot } from './ui/snapshot';
-import { IDLE_MS, MEASURE_FRAMES, RESULT_BASE_URL } from './config';
+import { IDLE_MS, MEASURE_FRAMES, MEASURE_MS, RESULT_BASE_URL, STEADY_MS } from './config';
 import type { BirthInput, Judgement, Measurements, ReadingText, SajuResult } from './types';
 
 type Screen = 'attract' | 'birth' | 'camera' | 'result';
@@ -120,7 +120,8 @@ async function enterCamera() {
 }
 
 function trackFace(myRun: number) {
-  let steady = 0;
+  let steadySince = -1;
+  let lastSample = -Infinity;
   const frames: Measurements[] = [];
   let smiles = 0;
   let last: FaceFrame | null = null;
@@ -138,14 +139,16 @@ function trackFace(myRun: number) {
       guide.classList.toggle('is-ok', ok);
       drawLive(lm ?? null, frames.length > 0);
 
+      if (!ok) steadySince = -1;
       if (!lm) {
         camHint.textContent = '얼굴이 보이지 않아요. 화면 가운데로 와 주세요.';
       } else if (!ok) {
         camHint.textContent = width <= 0.18 ? '조금만 더 가까이 와 주세요.' : width >= 0.6 ? '조금만 뒤로 물러나 주세요.' : '고개를 정면으로 돌려 주세요.';
-      } else if (frames.length === 0 && steady < 15) {
-        steady++;
+      } else if (frames.length === 0 && (steadySince < 0 || now - steadySince < STEADY_MS)) {
+        if (steadySince < 0) steadySince = now;
         camHint.textContent = '좋아요! 그대로 있어 주세요.';
-      } else {
+      } else if (now - lastSample >= MEASURE_MS / MEASURE_FRAMES) {
+        lastSample = now;
         camTitle.textContent = '얼굴을 읽고 있어요';
         camHint.textContent = '움직이지 말고 편하게 정면을 봐 주세요.';
         frames.push(measureFrame(lm, video.videoWidth, video.videoHeight));

@@ -8,3 +8,6 @@ export const RESULT_BASE_URL: string =
 
 export const IDLE_MS = { result: 60_000, other: 90_000 };
 export const MEASURE_FRAMES = 30;
+/** 카메라 fps와 상관없이 같은 빠르기로: 정면을 잡고 기다리는 시간, 30프레임을 고르게 나눠 담는 시간 */
+export const STEADY_MS = 1000;
+export const MEASURE_MS = 3000;
