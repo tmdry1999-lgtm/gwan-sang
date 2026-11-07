@@ -9,7 +9,7 @@ import { setupOperator, selectedModel, isCalibrating } from './booth/operator';
 import { castGwae } from './engine/maehwa';
 import { computeSaju } from './engine/saju';
 import { judge } from './engine/judge';
-import { pickFigure } from './engine/figure';
+import { pickFigures } from './engine/figure';
 import { figureCard } from './ui/figure-card';
 import { isFrontal, measureFrame, medianOf } from './measure/measure';
 import { writeReading } from './llm/ollama';
@@ -234,9 +234,12 @@ function renderStatic(j: Judgement) {
     li.append(h, Object.assign(document.createElement('p'), { textContent: '읽는 중…' }));
     return li;
   });
-  const fig = figureCard(pickFigure(j.face.main, j.gwae.movingLine));
-  fig.style.animationDelay = `${cards.length * 80}ms`;
-  $('#cards').replaceChildren(...cards, fig);
+  const figs = pickFigures(j.face, j.gwae.movingLine).map((p, i) => {
+    const li = figureCard(p);
+    li.style.animationDelay = `${(cards.length + i) * 80}ms`;
+    return li;
+  });
+  $('#cards').replaceChildren(...cards, ...figs);
 }
 
 function fillReading(r: ReadingText, doneKeys: Set<string>) {
@@ -254,15 +257,15 @@ function fillReading(r: ReadingText, doneKeys: Set<string>) {
 
 // 휴대폰이 화면에서 읽을 수 있게: 주소 800자 이하(QR 버전 20 이하) + 크게 + 여백 2칸
 const QR_MAX_LEN = 800;
-async function drawQr(r: ReadingText, j: Judgement, figureId: string) {
-  const url = buildResultUrl(RESULT_BASE_URL, toPayload(r, j, figureId), QR_MAX_LEN);
+async function drawQr(r: ReadingText, j: Judgement, figureIds: string[]) {
+  const url = buildResultUrl(RESULT_BASE_URL, toPayload(r, j, figureIds), QR_MAX_LEN);
   await QRCode.toCanvas($<HTMLCanvasElement>('#qr'), url, { errorCorrectionLevel: 'L', margin: 2, width: 480 });
 }
 
 async function renderReading(myRun: number, j: Judgement) {
-  const figureId = pickFigure(j.face.main, j.gwae.movingLine).id;
+  const figureIds = pickFigures(j.face, j.gwae.movingLine).map((p) => p.figure.id);
   // AI 문장을 기다리지 않고 기본 문장으로 QR부터 띄운다. AI 문장이 오면 다시 그린다.
-  await drawQr(buildFallback(j), j, figureId);
+  await drawQr(buildFallback(j), j, figureIds);
   const done = new Set<string>();
   const reading = await writeReading(j, {
     model: selectedModel(),
@@ -275,7 +278,7 @@ async function renderReading(myRun: number, j: Judgement) {
   if (myRun !== runId) return;
   fillReading(reading, new Set(reading.categories.map((c) => c.key)));
   $('#source').textContent = reading.source === 'llm' ? '풀이 문장: AI' : '풀이 문장: 기본 문장';
-  if (reading.source === 'llm') await drawQr(reading, j, figureId);
+  if (reading.source === 'llm') await drawQr(reading, j, figureIds);
 }
 
 // ── 공통 버튼 ─────────────────────────────────────────

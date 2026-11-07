@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { figureById, pickFigure } from './figure';
+import { figureById, pickFigure, pickFigures, picksFromIds } from './figure';
 import { OHAENG } from '../types';
 
 describe('같은 기운의 역사 인물', () => {
@@ -25,5 +25,19 @@ describe('같은 기운의 역사 인물', () => {
 
   it('없는 id는 null', () => {
     expect(figureById('nobody')).toBeNull();
+  });
+
+  it('주형 1명 + 보조형 1명, 겹치지 않는다', () => {
+    const picks = pickFigures({ main: '목', sub: '토' }, 1);
+    expect(picks.map((p) => [p.role, p.type])).toEqual([['주형', '목'], ['보조형', '토']]);
+    expect(picks[0].figure.id).not.toBe(picks[1].figure.id);
+    expect(pickFigures({ main: '수', sub: '수' }, 1)).toHaveLength(1);
+  });
+
+  it('QR id 목록으로 같은 카드를 되살린다 (예전 한 명짜리 QR 포함)', () => {
+    const picks = pickFigures({ main: '금', sub: '화' }, 4);
+    expect(picksFromIds(picks.map((p) => p.figure.id))).toEqual(picks);
+    expect(picksFromIds(['sejong'])).toEqual([{ role: '주형', type: '토', figure: figureById('sejong') }]);
+    expect(picksFromIds(['nobody', 'yihwang'])).toHaveLength(1);
   });
 });

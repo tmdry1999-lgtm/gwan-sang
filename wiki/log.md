@@ -2,6 +2,9 @@
 
 새 기록을 맨 위에 쓴다. 형식: `## YYYY-MM-DD 작업종류 — 한 줄 요약` 다음 줄에 바뀐 페이지.
 
+## 2026-11-08 앱 연결 — 역사 인물 카드 2장
+- [readings/figures.md](readings/figures.md): 주형 1명 + 보조형 1명으로 바꿈
+
 ## 2026-11-07 ingest — 같은 기운의 역사 인물
 - 웹 자료 s14–s20 수집 → [raw/sources.md](../raw/sources.md). s07에 인물 예시가 있던 것도 확인.
 - 신규 [readings/figures.md](readings/figures.md) → `app/data/figures.json`

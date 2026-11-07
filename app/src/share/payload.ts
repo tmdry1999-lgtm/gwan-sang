@@ -2,7 +2,7 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import type { Judgement, ReadingText } from '../types';
 
-/** 짧은 키: v 버전, h 헤드라인, s 요약, f [주형, 보조형], g [괘이름, 한자, 메시지], c [아이콘, 라벨, 별점, 본문, 조언][], p 역사 인물 id(없을 수 있음) */
+/** 짧은 키: v 버전, h 헤드라인, s 요약, f [주형, 보조형], g [괘이름, 한자, 메시지], c [아이콘, 라벨, 별점, 본문, 조언][], p 역사 인물 id를 쉼표로 이은 것 "주형,보조형"(없을 수 있음) */
 export interface SharePayload {
   v: 1;
   h: string;
@@ -13,7 +13,7 @@ export interface SharePayload {
   p?: string;
 }
 
-export function toPayload(r: ReadingText, j: Judgement, figureId?: string): SharePayload {
+export function toPayload(r: ReadingText, j: Judgement, figureIds: string[] = []): SharePayload {
   return {
     v: 1,
     h: r.headline,
@@ -21,7 +21,7 @@ export function toPayload(r: ReadingText, j: Judgement, figureId?: string): Shar
     f: [j.face.main, j.face.sub],
     g: [j.gwae.name, j.gwae.hanja, j.gwae.message],
     c: j.categories.map((c, i) => [c.icon, c.label, c.stars, r.categories[i]?.text ?? '', r.categories[i]?.tip ?? '']),
-    ...(figureId ? { p: figureId } : {}),
+    ...(figureIds.length ? { p: figureIds.join(',') } : {}),
   };
 }
 

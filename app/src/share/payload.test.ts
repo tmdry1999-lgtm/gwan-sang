@@ -39,9 +39,9 @@ describe('QR 결과 주소', () => {
   });
 
   it('역사 인물 id는 줄이는 중에도 남는다', () => {
-    const p = toPayload(reading, judgement, 'sejong');
+    const p = toPayload(reading, judgement, ['sejong', 'yisunsin']);
     const back = decodePayload(new URL(buildResultUrl('https://x.io/r.html', p, 600)).hash.slice(1)) as SharePayload;
-    expect(back.p).toBe('sejong');
+    expect(back.p).toBe('sejong,yisunsin');
     expect(toPayload(reading, judgement).p).toBeUndefined();
   });
 

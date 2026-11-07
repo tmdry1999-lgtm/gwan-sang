@@ -1,6 +1,6 @@
 // 휴대폰 결과 페이지: URL # 뒤 데이터만 읽어 그린다. 서버 요청 없음.
 import { decodePayload } from './share/payload';
-import { figureById } from './engine/figure';
+import { picksFromIds } from './engine/figure';
 import { figureCard } from './ui/figure-card';
 
 const $ = (sel: string) => document.querySelector<HTMLElement>(sel)!;
@@ -44,6 +44,6 @@ if (!p) {
     if (tip) li.append(Object.assign(document.createElement('p'), { className: 'tip', textContent: `💡 ${tip}` }));
     return li;
   });
-  const fig = p.p ? figureById(p.p) : null;
-  $('#cards').replaceChildren(...cards, ...(fig ? [figureCard(fig)] : []), gwaeCard);
+  const figs = picksFromIds(p.p ? p.p.split(',') : []).map(figureCard);
+  $('#cards').replaceChildren(...cards, ...figs, gwaeCard);
 }
