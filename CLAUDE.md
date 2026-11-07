@@ -18,6 +18,7 @@ npm run build          # dist/ (QR 결과 페이지까지 포함)
 - 운영자 패널: `Ctrl+Shift+O` (Ollama 상태, 모델 선택, 기준선 잡기, 전체 화면)
 - Ollama 연결: Ollama 설치 → `ollama pull gemma3:4b` → 환경 변수 `OLLAMA_ORIGINS=http://localhost:5173` 설정 후 Ollama 재시작. 연결이 없으면 앱은 미리 쓴 기본 문장으로 풀이한다.
 - QR이 휴대폰에서 열리려면 결과 페이지를 인터넷에 올리고 `VITE_RESULT_BASE_URL=https://.../result.html`로 빌드한다. (그 전에는 QR이 localhost를 가리킴)
+- 웹 배포: main에 push하면 GitHub Actions가 GitHub Pages에 올린다(`.github/workflows/pages.yml`). 풀이용 Ollama 서버 만들기와 저장소 변수 `OLLAMA_URL`은 [deploy/README.md](deploy/README.md).
 
 ## 코드 지도
 
@@ -32,7 +33,7 @@ npm run build          # dist/ (QR 결과 페이지까지 포함)
 
 ## 절대 규칙
 
-1. **얼굴 사진과 측정값은 부스 노트북 밖으로 나가지 않는다.** 해석은 로컬 Ollama만 쓴다. 클라우드 LLM API 금지.
+1. **얼굴 사진·랜드마크 좌표·생일은 기기 밖으로 나가지 않는다.** 풀이 문장용 판정 결과 텍스트만 Ollama로 보낸다. Ollama는 부스 노트북의 로컬 Ollama이거나, 우리가 직접 운영하며 받은 내용을 저장하지 않는 서버([deploy/](deploy/README.md))만 쓴다. 클라우드 LLM API 금지.
 2. **결과는 서버에 저장하지 않는다.** QR은 결과를 URL `#` 뒤에 압축해 담고, 정적 결과 페이지가 그것을 읽어 그린다.
 3. **"체험용"이라고 쓴다.** "오락용"이라는 말은 쓰지 않는다.
 4. **좋은 말 위주.** 조심할 점은 관상서 근거가 분명할 때만, 완곡하게. 말투 규칙은 [wiki/tone-guide.md](wiki/tone-guide.md).

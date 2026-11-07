@@ -1,0 +1,50 @@
+# main에 올리면 테스트 → 빌드 → GitHub Pages 배포
+# 저장소 Settings → Secrets and variables → Actions → Variables 에서
+#   OLLAMA_URL   (필수 아님) 예: https://1-2-3-4.sslip.io   — 없으면 기본 문장으로 풀이
+#   OLLAMA_MODEL (필수 아님) 기본 gemma3:1b
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+        env:
+          VITE_RESULT_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/result.html
+          VITE_OLLAMA_URL: ${{ vars.OLLAMA_URL }}
+          VITE_OLLAMA_MODEL: ${{ vars.OLLAMA_MODEL || 'gemma3:1b' }}
+          VITE_OLLAMA_TIMEOUT_MS: '60000'
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

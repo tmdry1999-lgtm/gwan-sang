@@ -1,0 +1,18 @@
+# 풀이용 Ollama 앞문. setup-server.sh가 {$DOMAIN}을 채워 /etc/caddy/Caddyfile로 복사한다.
+# 접속 기록(log 지시어)은 일부러 두지 않는다 — 받은 내용을 남기지 않기 위해.
+{$DOMAIN} {
+	@api path /api/chat /api/tags
+	handle @api {
+		request_body {
+			max_size 64KB
+		}
+		reverse_proxy 127.0.0.1:11434 {
+			# Ollama는 localhost가 아닌 Host 헤더를 거절한다. CORS는 Ollama의 OLLAMA_ORIGINS가 맡는다.
+			header_up Host localhost:11434
+		}
+	}
+	handle {
+		respond 404
+	}
+	header -Server
+}

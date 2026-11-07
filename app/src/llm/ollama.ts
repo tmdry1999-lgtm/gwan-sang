@@ -4,8 +4,11 @@ import { buildFallback, fallbackCategoryText, qrSummaryOf } from './fallback';
 import { isSafe } from './safety';
 import type { CategoryJudgement, Judgement, ReadingText } from '../types';
 
-export const OLLAMA_URL = 'http://localhost:11434';
-export const DEFAULT_MODEL = 'gemma3:4b';
+// 웹 배포판은 빌드할 때 VITE_OLLAMA_URL=https://<서버>로 자체 Ollama 서버를 가리킨다 → deploy/README.md
+export const OLLAMA_URL: string = import.meta.env.VITE_OLLAMA_URL || 'http://localhost:11434';
+export const DEFAULT_MODEL: string = import.meta.env.VITE_OLLAMA_MODEL || 'gemma3:4b';
+/** 요청 하나당. GPU 없는 서버는 느려서 빌드할 때 늘린다. */
+const DEFAULT_TIMEOUT_MS = Number(import.meta.env.VITE_OLLAMA_TIMEOUT_MS) || 15000;
 
 const SYSTEM = `너는 전통 관상서(마의상법, 유장상법)를 바탕으로 체험용 관상 풀이를 쓰는 작가다.
 독자는 학생과 학부모다.
@@ -63,7 +66,7 @@ export async function writeReading(j: Judgement, opts: WriteOptions = {}): Promi
   const o = {
     baseUrl: opts.baseUrl ?? OLLAMA_URL,
     model: opts.model ?? DEFAULT_MODEL,
-    timeoutMs: opts.timeoutMs ?? 15000,
+    timeoutMs: opts.timeoutMs ?? DEFAULT_TIMEOUT_MS,
     fetchFn: opts.fetchFn ?? ((u: string, i: RequestInit) => fetch(u, i)),
   };
   const out = buildFallback(j);

@@ -256,7 +256,7 @@ async function renderReading(myRun: number, j: Judgement) {
   });
   if (myRun !== runId) return;
   fillReading(reading, new Set(reading.categories.map((c) => c.key)));
-  $('#source').textContent = reading.source === 'llm' ? '풀이 문장: 로컬 AI' : '풀이 문장: 기본 문장';
+  $('#source').textContent = reading.source === 'llm' ? '풀이 문장: AI' : '풀이 문장: 기본 문장';
   const url = buildResultUrl(RESULT_BASE_URL, toPayload(reading, j));
   await QRCode.toCanvas($<HTMLCanvasElement>('#qr'), url, { errorCorrectionLevel: 'L', margin: 1, width: 264 });
 }
