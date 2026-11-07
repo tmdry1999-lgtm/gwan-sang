@@ -126,6 +126,9 @@ body {
 .cards .figure { border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
 .cards .figure-basis { margin: 0 0 .25rem; color: var(--gold); font-size: .85rem; letter-spacing: .02em; }
 .cards .figure h3 { font-family: var(--serif); }
+.cards .pastlife .figure-basis { color: var(--aqua); }
+.cards .pastlife h3 { font-family: var(--serif); display: block; }
+.cards .relation-types { color: var(--gold); font-size: .95rem; font-weight: 500; }
 .cards .figure-years { color: var(--dim); font-family: var(--sans); font-size: .85rem; font-weight: 400; }
 .stars { --v: 4; position: relative; display: inline-block; font-size: 1.05rem; letter-spacing: .1em; color: #ffffff22; }
 .stars::before { content: '★★★★★'; }

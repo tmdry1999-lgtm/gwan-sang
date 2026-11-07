@@ -2,7 +2,8 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import type { Judgement, ReadingText } from '../types';
 
-/** 짧은 키: v 버전, h 헤드라인, s 요약, f [주형, 보조형], g [괘이름, 한자, 메시지], c [아이콘, 라벨, 별점, 본문, 조언][], p 역사 인물 id를 쉼표로 이은 것 "주형,보조형"(없을 수 있음) */
+/** 짧은 키: v 버전, h 헤드라인, s 요약, f [주형, 보조형], g [괘이름, 한자, 메시지], c [아이콘, 라벨, 별점, 본문, 조언][], p 역사 인물 id를 쉼표로 이은 것 "주형,보조형",
+ *  k [사주 대표 기운, 괘의 위쪽, 동효] — 상생·상극·전생 카드를 휴대폰에서 다시 만든다. p, k는 예전 QR에 없을 수 있음 */
 export interface SharePayload {
   v: 1;
   h: string;
@@ -11,6 +12,7 @@ export interface SharePayload {
   g: [string, string, string];
   c: [string, string, number, string, string][];
   p?: string;
+  k?: [string, string, number];
 }
 
 export function toPayload(r: ReadingText, j: Judgement, figureIds: string[] = []): SharePayload {
@@ -22,6 +24,7 @@ export function toPayload(r: ReadingText, j: Judgement, figureIds: string[] = []
     g: [j.gwae.name, j.gwae.hanja, j.gwae.message],
     c: j.categories.map((c, i) => [c.icon, c.label, c.stars, r.categories[i]?.text ?? '', r.categories[i]?.tip ?? '']),
     ...(figureIds.length ? { p: figureIds.join(',') } : {}),
+    k: [j.saju.dominant, j.gwae.upper, j.gwae.movingLine],
   };
 }
 

@@ -21,13 +21,14 @@ updated: 2026-11-02
 
 ## ② 사주
 - [saju/ohaeng-balance.md](saju/ohaeng-balance.md) — 생년월일(시)로 오행 균형 보기
+- [saju/sangsaeng-sanggeuk.md](saju/sangsaeng-sanggeuk.md) — 대표 기운으로 보는 상생·상극 사주 (결과 화면 카드)
 
 ## ③ 매화역수
 - [maehwa/gigwae.md](maehwa/gigwae.md) — 연월일시로 괘 뽑기, 팔괘 뜻
 
 ## 풀이 방안
 - [readings/plan-a-fortune.md](readings/plan-a-fortune.md) — **A안: 운세 카테고리** (데모 1차)
-- [readings/plan-b-past-life.md](readings/plan-b-past-life.md) — B안: 전생 풀이 (위키만)
+- [readings/plan-b-past-life.md](readings/plan-b-past-life.md) — B안: 전생 풀이 (짧은 판이 "재미로 보세요" 카드로 들어감)
 - [readings/figures.md](readings/figures.md) — 같은 기운의 역사 인물 (결과 화면 카드)
 
 ## 앱 연결

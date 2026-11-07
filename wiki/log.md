@@ -2,6 +2,11 @@
 
 새 기록을 맨 위에 쓴다. 형식: `## YYYY-MM-DD 작업종류 — 한 줄 요약` 다음 줄에 바뀐 페이지.
 
+## 2026-11-08 앱 연결 — 상생·상극 사주, 재미로 보는 전생
+- 신규 [saju/sangsaeng-sanggeuk.md](saju/sangsaeng-sanggeuk.md) → `app/data/relations.json`. 원자료 g05(상생·상극 통설) 추가.
+- [readings/plan-b-past-life.md](readings/plan-b-past-life.md): 짧은 판을 앱에 넣음, 성품·선물 표 추가 → `app/data/pastlife.json`
+- 결과 카드 순서: 운세 6 → 역사 인물 2 → 상생 → 상극 → 전생 (휴대폰 결과는 끝에 괘)
+
 ## 2026-11-08 앱 연결 — 역사 인물 카드 2장
 - [readings/figures.md](readings/figures.md): 주형 1명 + 보조형 1명으로 바꿈
 

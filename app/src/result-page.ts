@@ -2,6 +2,8 @@
 import { decodePayload } from './share/payload';
 import { picksFromIds } from './engine/figure';
 import { figureCard } from './ui/figure-card';
+import { pastLifeCard, relationCards } from './ui/extra-cards';
+import { OHAENG, TRIGRAMS, type Ohaeng, type Trigram } from './types';
 
 const $ = (sel: string) => document.querySelector<HTMLElement>(sel)!;
 const p = decodePayload(location.hash.slice(1));
@@ -45,5 +47,10 @@ if (!p) {
     return li;
   });
   const figs = picksFromIds(p.p ? p.p.split(',') : []).map(figureCard);
-  $('#cards').replaceChildren(...cards, ...figs, gwaeCard);
+  const extras: HTMLLIElement[] = [];
+  const [dominant, upper, line] = p.k ?? [];
+  if (OHAENG.includes(dominant as Ohaeng) && TRIGRAMS.includes(upper as Trigram) && OHAENG.includes(p.f[0] as Ohaeng)) {
+    extras.push(...relationCards(dominant as Ohaeng), pastLifeCard(p.f[0] as Ohaeng, dominant as Ohaeng, upper as Trigram, Number(line) || 0));
+  }
+  $('#cards').replaceChildren(...cards, ...figs, ...extras, gwaeCard);
 }

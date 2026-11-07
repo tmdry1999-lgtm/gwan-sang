@@ -11,6 +11,7 @@ import { computeSaju } from './engine/saju';
 import { judge } from './engine/judge';
 import { pickFigures } from './engine/figure';
 import { figureCard } from './ui/figure-card';
+import { pastLifeCard, relationCards } from './ui/extra-cards';
 import { isFrontal, measureFrame, medianOf } from './measure/measure';
 import { writeReading } from './llm/ollama';
 import { buildFallback } from './llm/fallback';
@@ -234,12 +235,13 @@ function renderStatic(j: Judgement) {
     li.append(h, Object.assign(document.createElement('p'), { textContent: '읽는 중…' }));
     return li;
   });
-  const figs = pickFigures(j.face, j.gwae.movingLine).map((p, i) => {
-    const li = figureCard(p);
-    li.style.animationDelay = `${(cards.length + i) * 80}ms`;
-    return li;
-  });
-  $('#cards').replaceChildren(...cards, ...figs);
+  const extras = [
+    ...pickFigures(j.face, j.gwae.movingLine).map(figureCard),
+    ...relationCards(j.saju.dominant),
+    pastLifeCard(j.face.main, j.saju.dominant, j.gwae.upper, j.gwae.movingLine),
+  ];
+  extras.forEach((li, i) => (li.style.animationDelay = `${(cards.length + i) * 80}ms`));
+  $('#cards').replaceChildren(...cards, ...extras);
 }
 
 function fillReading(r: ReadingText, doneKeys: Set<string>) {
