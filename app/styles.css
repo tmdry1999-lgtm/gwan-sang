@@ -123,6 +123,10 @@ body {
 .cards p { margin: 0; color: var(--dim); }
 .cards .tip { margin-top: .75rem; color: var(--aqua); font-size: .95rem; }
 .cards .is-loading p { opacity: .5; }
+.cards .figure { border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+.cards .figure-basis { margin: 0 0 .25rem; color: var(--gold); font-size: .85rem; letter-spacing: .02em; }
+.cards .figure h3 { font-family: var(--serif); }
+.cards .figure-years { color: var(--dim); font-family: var(--sans); font-size: .85rem; font-weight: 400; }
 .stars { --v: 4; position: relative; display: inline-block; font-size: 1.05rem; letter-spacing: .1em; color: #ffffff22; }
 .stars::before { content: '★★★★★'; }
 .stars::after { content: '★★★★★'; position: absolute; inset: 0; width: calc(var(--v) / 5 * 100%); overflow: hidden; color: var(--gold); }

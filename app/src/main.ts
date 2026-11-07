@@ -9,6 +9,8 @@ import { setupOperator, selectedModel, isCalibrating } from './booth/operator';
 import { castGwae } from './engine/maehwa';
 import { computeSaju } from './engine/saju';
 import { judge } from './engine/judge';
+import { pickFigure } from './engine/figure';
+import { figureCard } from './ui/figure-card';
 import { isFrontal, measureFrame, medianOf } from './measure/measure';
 import { writeReading } from './llm/ollama';
 import { buildResultUrl, toPayload } from './share/payload';
@@ -231,7 +233,9 @@ function renderStatic(j: Judgement) {
     li.append(h, Object.assign(document.createElement('p'), { textContent: '읽는 중…' }));
     return li;
   });
-  $('#cards').replaceChildren(...cards);
+  const fig = figureCard(pickFigure(j.face.main, j.gwae.movingLine));
+  fig.style.animationDelay = `${cards.length * 80}ms`;
+  $('#cards').replaceChildren(...cards, fig);
 }
 
 function fillReading(r: ReadingText, doneKeys: Set<string>) {
@@ -260,7 +264,7 @@ async function renderReading(myRun: number, j: Judgement) {
   if (myRun !== runId) return;
   fillReading(reading, new Set(reading.categories.map((c) => c.key)));
   $('#source').textContent = reading.source === 'llm' ? '풀이 문장: AI' : '풀이 문장: 기본 문장';
-  const url = buildResultUrl(RESULT_BASE_URL, toPayload(reading, j));
+  const url = buildResultUrl(RESULT_BASE_URL, toPayload(reading, j, pickFigure(j.face.main, j.gwae.movingLine).id));
   await QRCode.toCanvas($<HTMLCanvasElement>('#qr'), url, { errorCorrectionLevel: 'L', margin: 1, width: 264 });
 }
 

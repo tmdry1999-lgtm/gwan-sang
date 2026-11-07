@@ -2,6 +2,13 @@
 
 새 기록을 맨 위에 쓴다. 형식: `## YYYY-MM-DD 작업종류 — 한 줄 요약` 다음 줄에 바뀐 페이지.
 
+## 2026-11-07 ingest — 같은 기운의 역사 인물
+- 웹 자료 s14–s20 수집 → [raw/sources.md](../raw/sources.md). s07에 인물 예시가 있던 것도 확인.
+- 신규 [readings/figures.md](readings/figures.md) → `app/data/figures.json`
+- 관상 근거는 목형(이황)·토형(세종, 이이)만. 화·금·수형은 기질 연결로 채움(사용자 결정).
+- 이순신: 고상안의 부정적 관상평(s19) 때문에 관상 근거로 쓰지 않고 금(金) 기질로만 연결.
+- 남은 일: 화·금·수형 역사 인물의 관상 근거 찾기, 김구(s15) 근거 보강
+
 ## 2026-11-04 앱 연결 — 위키 → app/data/*.json
 - [sibigung.md](gwansang/sibigung.md), [samjeong-ogwan.md](gwansang/samjeong-ogwan.md), [plan-a-fortune.md](readings/plan-a-fortune.md) → `app/data/rules.json`
 - [measurement-map.md](gwansang/measurement-map.md) → `app/data/landmarks.json`, `app/data/baseline.json`(추정 초기값)

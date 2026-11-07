@@ -29,6 +29,20 @@
 | <a id="s12"></a>s12 | [MediaPipe Face Landmarker (Web)](https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker/web_js) | 얼굴 랜드마크 478개, `@mediapipe/tasks-vision`, `detectForVideo`는 UI 스레드를 막음. |
 | <a id="s13"></a>s13 | [다음뉴스 — 관상가 만나 보니 해석 엇갈려](https://v.daum.net/v/G8MrWkv8Tf?f=p) | 같은 얼굴도 관상가마다 다르게 봄 → "체험용" 표기의 근거. |
 
+## 웹 자료 2차 수집 — 역사 인물 (수집일: 2026-11-07)
+
+> s07(이문학)도 인물 예시를 담고 있다: 목형=퇴계 이황(천 원권), 토형=세종대왕(만 원권)·율곡 이이(오천 원권). 화형=전원주(연예인). 금형·수형은 예시 없음.
+
+| id | 출처 | 핵심 내용 |
+|---|---|---|
+| <a id="s14"></a>s14 | [울산저널i — 오서연, 목형상으로 보는 관상 해법 (2024-08-25)](https://m.usjournal.kr/news/newsview.php?ncode=1065623409500337) | 이마·어깨 넓고 하관 좁음. "퇴계 이황 선생님이 그 대표적인 목형의 얼굴이다." 현대인 차승원·유재석. |
+| <a id="s15"></a>s15 | [울산저널i — 오서연, 토형상으로 보는 관상 해법 (2024-11-02)](https://m.usjournal.kr/news/newsview.php?ncode=1065594308745571) | 마름모꼴, 광대 넓음. 예시 김구 선생, 이건희, 심상정, 최불암 등. 인물별 근거 없음. |
+| <a id="s16"></a>s16 | [울산저널i — 오서연, 금형상으로 보는 관상 해법 (2024-11-23)](https://m.usjournal.kr/news/newsview.php?ncode=1065571081368511) | 긴 네모꼴. 예시 박정희 대통령, 정몽구, 손석희 등 현대 인물만. |
+| <a id="s17"></a>s17 | [울산저널i — 오서연, 수형상으로 보는 관상 해법 (2024-12-21)](https://www.usjournal.kr/news/newsview.php?ncode=1065609397790888) | 둥글고 도톰함. 예시 안철수, 추미애, 이영자 등 현대 인물만. |
+| <a id="s18"></a>s18 | [대경일보 — 이복순, 인상학으로 보는 화형인 (2024-06-06)](https://www.dkilbo.com/news/articleView.html?idxno=445802) | 이마 좁고 턱 넓은 삼각형. 예시 강호동, 장미란. 역사 인물 없음. |
+| <a id="s19"></a>s19 | [아시아경제 — 이순신 장군의 용모는 정말 단아했을까? (2019-10-01)](https://www.asiae.co.kr/article/2019100115571466236) | 『징비록』 "容貌雅飭(용모가 단아하고 정갈)". 고상안 『태촌집』(1594): 생김이 풍만·후덕하지 않고 입술이 뒤집혀 복장(福將)은 아니라고 봄. |
+| <a id="s20"></a>s20 | 한국어 위키백과 인물 문서: [이황](https://ko.wikipedia.org/wiki/이황), [세종](https://ko.wikipedia.org/wiki/세종), [이이](https://ko.wikipedia.org/wiki/이이), [김구](https://ko.wikipedia.org/wiki/김구), [김홍도](https://ko.wikipedia.org/wiki/김홍도), [유관순](https://ko.wikipedia.org/wiki/유관순), [이순신](https://ko.wikipedia.org/wiki/이순신), [강감찬](https://ko.wikipedia.org/wiki/강감찬), [정약용](https://ko.wikipedia.org/wiki/정약용), [장영실](https://ko.wikipedia.org/wiki/장영실) | 생몰년과 업적 한 줄의 근거. |
+
 ## 일반 지식 (출처 미검증 — 원전 확보 시 확인)
 
 - <a id="g01"></a>**g01 오관(五官)**: 귀=채청관(採聽官), 눈썹=보수관(保壽官), 눈=감찰관(監察官), 코=심변관(審辨官), 입=출납관(出納官). 마의상법 계열의 통설.

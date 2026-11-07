@@ -28,6 +28,7 @@ updated: 2026-11-02
 ## 풀이 방안
 - [readings/plan-a-fortune.md](readings/plan-a-fortune.md) — **A안: 운세 카테고리** (데모 1차)
 - [readings/plan-b-past-life.md](readings/plan-b-past-life.md) — B안: 전생 풀이 (위키만)
+- [readings/figures.md](readings/figures.md) — 같은 기운의 역사 인물 (결과 화면 카드)
 
 ## 앱 연결
 - [prompt/llm-prompt.md](prompt/llm-prompt.md) — Ollama 프롬프트 틀과 출력 JSON
