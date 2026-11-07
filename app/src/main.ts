@@ -13,6 +13,7 @@ import { pickFigure } from './engine/figure';
 import { figureCard } from './ui/figure-card';
 import { isFrontal, measureFrame, medianOf } from './measure/measure';
 import { writeReading } from './llm/ollama';
+import { buildFallback } from './llm/fallback';
 import { buildResultUrl, toPayload } from './share/payload';
 import { captureFrame, drawSnapshot } from './ui/snapshot';
 import { IDLE_MS, MEASURE_FRAMES, MEASURE_MS, RESULT_BASE_URL, STEADY_MS } from './config';
@@ -251,7 +252,17 @@ function fillReading(r: ReadingText, doneKeys: Set<string>) {
   }
 }
 
+// 휴대폰이 화면에서 읽을 수 있게: 주소 800자 이하(QR 버전 20 이하) + 크게 + 여백 2칸
+const QR_MAX_LEN = 800;
+async function drawQr(r: ReadingText, j: Judgement, figureId: string) {
+  const url = buildResultUrl(RESULT_BASE_URL, toPayload(r, j, figureId), QR_MAX_LEN);
+  await QRCode.toCanvas($<HTMLCanvasElement>('#qr'), url, { errorCorrectionLevel: 'L', margin: 2, width: 480 });
+}
+
 async function renderReading(myRun: number, j: Judgement) {
+  const figureId = pickFigure(j.face.main, j.gwae.movingLine).id;
+  // AI 문장을 기다리지 않고 기본 문장으로 QR부터 띄운다. AI 문장이 오면 다시 그린다.
+  await drawQr(buildFallback(j), j, figureId);
   const done = new Set<string>();
   const reading = await writeReading(j, {
     model: selectedModel(),
@@ -264,8 +275,7 @@ async function renderReading(myRun: number, j: Judgement) {
   if (myRun !== runId) return;
   fillReading(reading, new Set(reading.categories.map((c) => c.key)));
   $('#source').textContent = reading.source === 'llm' ? '풀이 문장: AI' : '풀이 문장: 기본 문장';
-  const url = buildResultUrl(RESULT_BASE_URL, toPayload(reading, j, pickFigure(j.face.main, j.gwae.movingLine).id));
-  await QRCode.toCanvas($<HTMLCanvasElement>('#qr'), url, { errorCorrectionLevel: 'L', margin: 1, width: 264 });
+  if (reading.source === 'llm') await drawQr(reading, j, figureId);
 }
 
 // ── 공통 버튼 ─────────────────────────────────────────

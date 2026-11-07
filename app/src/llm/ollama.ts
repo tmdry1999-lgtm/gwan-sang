@@ -5,7 +5,10 @@ import { isSafe } from './safety';
 import type { CategoryJudgement, Judgement, ReadingText } from '../types';
 
 // 웹 배포판은 빌드할 때 VITE_OLLAMA_URL=https://<서버>로 자체 Ollama 서버를 가리킨다 → deploy/README.md
-export const OLLAMA_URL: string = import.meta.env.VITE_OLLAMA_URL || 'http://localhost:11434';
+// 서버 주소 없이 인터넷에 올린 판에서는 아예 부르지 않는다. 방문자 PC의 localhost를 두드리면
+// 크롬이 "로컬 네트워크 접근" 허락을 묻고, 그동안 풀이와 QR이 멈춘다.
+const onLocalhost = typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname);
+export const OLLAMA_URL: string | null = import.meta.env.VITE_OLLAMA_URL || (onLocalhost ? 'http://localhost:11434' : null);
 export const DEFAULT_MODEL: string = import.meta.env.VITE_OLLAMA_MODEL || 'gemma3:4b';
 /** 요청 하나당. GPU 없는 서버는 느려서 빌드할 때 늘린다. */
 const DEFAULT_TIMEOUT_MS = Number(import.meta.env.VITE_OLLAMA_TIMEOUT_MS) || 15000;
@@ -33,7 +36,8 @@ const CATEGORY_SCHEMA = {
 };
 
 export interface WriteOptions {
-  baseUrl?: string;
+  /** null이면 Ollama를 부르지 않고 기본 문장만 */
+  baseUrl?: string | null;
   model?: string;
   /** 요청 하나당 */
   timeoutMs?: number;
@@ -41,7 +45,9 @@ export interface WriteOptions {
   onPart?: (key: 'overall' | CategoryJudgement['key'], partial: ReadingText) => void;
 }
 
-async function ask<T>(input: object, schema: object, o: Required<Omit<WriteOptions, 'onPart'>>): Promise<T> {
+type AskOptions = Required<Omit<WriteOptions, 'onPart' | 'baseUrl'>> & { baseUrl: string };
+
+async function ask<T>(input: object, schema: object, o: AskOptions): Promise<T> {
   const res = await o.fetchFn(`${o.baseUrl}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -63,13 +69,15 @@ async function ask<T>(input: object, schema: object, o: Required<Omit<WriteOptio
 }
 
 export async function writeReading(j: Judgement, opts: WriteOptions = {}): Promise<ReadingText> {
-  const o = {
-    baseUrl: opts.baseUrl ?? OLLAMA_URL,
+  const baseUrl = opts.baseUrl === undefined ? OLLAMA_URL : opts.baseUrl;
+  const out = buildFallback(j);
+  if (!baseUrl) return out;
+  const o: AskOptions = {
+    baseUrl,
     model: opts.model ?? DEFAULT_MODEL,
     timeoutMs: opts.timeoutMs ?? DEFAULT_TIMEOUT_MS,
     fetchFn: opts.fetchFn ?? ((u: string, i: RequestInit) => fetch(u, i)),
   };
-  const out = buildFallback(j);
   let reachable = true;
   let anyLlm = false;
 
@@ -117,6 +125,7 @@ export async function writeReading(j: Judgement, opts: WriteOptions = {}): Promi
 
 /** 운영자 패널용: 연결 확인과 설치된 모델 목록 */
 export async function listModels(baseUrl = OLLAMA_URL): Promise<string[] | null> {
+  if (!baseUrl) return null;
   try {
     const res = await fetch(`${baseUrl}/api/tags`, { signal: AbortSignal.timeout(3000) });
     const data = await res.json();
