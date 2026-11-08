@@ -236,9 +236,9 @@ function renderStatic(j: Judgement) {
     return li;
   });
   const extras = [
-    ...pickFigures(j.face, j.gwae.movingLine).map(figureCard),
+    ...pickFigures(j.face, j.seed).map(figureCard),
     ...relationCards(j.saju.dominant),
-    pastLifeCard(j.face.main, j.saju.dominant, j.gwae.upper, j.gwae.movingLine),
+    pastLifeCard(j.face.main, j.saju.dominant, j.gwae.upper, j.seed),
   ];
   extras.forEach((li, i) => (li.style.animationDelay = `${(cards.length + i) * 80}ms`));
   $('#cards').replaceChildren(...cards, ...extras);
@@ -253,7 +253,7 @@ function fillReading(r: ReadingText, doneKeys: Set<string>) {
     li.classList.remove('is-loading');
     li.querySelector('p')!.textContent = c.text;
     li.querySelector('.tip')?.remove();
-    if (c.tip) li.append(Object.assign(document.createElement('p'), { className: 'tip', textContent: `💡 ${c.tip}` }));
+    if (c.tip) li.append(Object.assign(document.createElement('p'), { className: 'tip caution', textContent: `⚠️ 조심할 점 · ${c.tip}` }));
   }
 }
 
@@ -265,7 +265,7 @@ async function drawQr(r: ReadingText, j: Judgement, figureIds: string[]) {
 }
 
 async function renderReading(myRun: number, j: Judgement) {
-  const figureIds = pickFigures(j.face, j.gwae.movingLine).map((p) => p.figure.id);
+  const figureIds = pickFigures(j.face, j.seed).map((p) => p.figure.id);
   // AI 문장을 기다리지 않고 기본 문장으로 QR부터 띄운다. AI 문장이 오면 다시 그린다.
   await drawQr(buildFallback(j), j, figureIds);
   const done = new Set<string>();

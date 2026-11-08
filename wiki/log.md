@@ -2,6 +2,12 @@
 
 새 기록을 맨 위에 쓴다. 형식: `## YYYY-MM-DD 작업종류 — 한 줄 요약` 다음 줄에 바뀐 페이지.
 
+## 2026-11-08 방침 변경 — 조심할 점, 사람마다 다른 결과, 인물 초상
+- [tone-guide.md](tone-guide.md): 재미로 보는 경고(별점 낮은 운세 둘) 허용. 별점 2–5. 사람별 시드로 문장·인물 고르기. CLAUDE.md 절대 규칙 4도 고침.
+- `rules.json`: headlines, cautions, luckyColor 추가
+- [readings/figures.md](readings/figures.md): 초상(s21), 같은 기운의 다른 인물 추가
+- 남은 일: 생일 기준 "사주가 닮은 인물"은 1900년 이전 음력 → 사주 계산이 필요해 보류
+
 ## 2026-11-08 앱 연결 — 상생·상극 사주, 재미로 보는 전생
 - 신규 [saju/sangsaeng-sanggeuk.md](saju/sangsaeng-sanggeuk.md) → `app/data/relations.json`. 원자료 g05(상생·상극 통설) 추가.
 - [readings/plan-b-past-life.md](readings/plan-b-past-life.md): 짧은 판을 앱에 넣음, 성품·선물 표 추가 → `app/data/pastlife.json`

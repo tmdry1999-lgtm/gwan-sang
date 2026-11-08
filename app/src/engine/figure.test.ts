@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { figureById, pickFigure, pickFigures, picksFromIds } from './figure';
+import { figureById, othersOf, pickFigure, pickFigures, picksFromIds } from './figure';
 import { OHAENG } from '../types';
 
 describe('같은 기운의 역사 인물', () => {
@@ -19,6 +19,27 @@ describe('같은 기운의 역사 인물', () => {
       for (let s = 0; s < 6; s++) {
         const f = pickFigure(o, s);
         if (f.basis === 'temper') expect(f.why).toContain('얼굴이 닮았다는 뜻은 아니에요');
+      }
+    }
+  });
+
+  it('같은 기운의 다른 인물: 카드에 나온 인물은 빼고 2–4명', () => {
+    for (const o of OHAENG) {
+      const shown = pickFigure(o, 0);
+      const others = othersOf(o, shown.id);
+      expect(others.length).toBeGreaterThanOrEqual(2);
+      expect(others.length).toBeLessThanOrEqual(4);
+      expect(others.map((x) => x.name)).not.toContain(shown.name);
+    }
+    expect(othersOf('토', 'sejong')[0].name).toBe('율곡 이이');
+  });
+
+  it('이미지는 앱 안의 figures/ 경로만 쓰고 출처를 단다', () => {
+    for (const o of OHAENG) for (let s = 0; s < 2; s++) {
+      const img = pickFigure(o, s).image;
+      if (img) {
+        expect(img.src).toMatch(/^figures\/[a-z]+\.jpg$/);
+        expect(img.credit).toContain('위키미디어 공용');
       }
     }
   });

@@ -17,6 +17,7 @@ const judgement = {
   face: { main: '토', sub: '금' },
   gwae: { name: '지천태', hanja: '地天泰', message: '술술 풀려요.', upper: '곤', movingLine: 3 },
   saju: { dominant: '금' },
+  seed: 723,
   categories: reading.categories.map((c, i) => ({ key: c.key, label: `라벨${i}`, icon: '⭐', stars: 4.5 })),
 } as unknown as Judgement;
 
@@ -42,7 +43,7 @@ describe('QR 결과 주소', () => {
     const p = toPayload(reading, judgement, ['sejong', 'yisunsin']);
     const back = decodePayload(new URL(buildResultUrl('https://x.io/r.html', p, 600)).hash.slice(1)) as SharePayload;
     expect(back.p).toBe('sejong,yisunsin');
-    expect(back.k).toEqual(['금', '곤', 3]);
+    expect(back.k).toEqual(['금', '곤', 3]); // 723 % 360
     expect(toPayload(reading, judgement).p).toBeUndefined();
   });
 

@@ -67,14 +67,18 @@ export interface CategoryJudgement {
   features: FeatureJudgement[];
   link: string | null;
   caution: string | null;
+  /** 문장 틀 고르기용 (사람마다 달라짐) */
+  variant: number;
 }
 
 export interface Judgement {
   face: FaceType;
   saju: SajuResult;
   gwae: Gwae;
-  overall: { headline: string; faceLine: string; sajuLine: string; gwaeLine: string };
+  overall: { headline: string; faceLine: string; sajuLine: string; gwaeLine: string; luckyLine: string };
   categories: CategoryJudgement[];
+  /** 측정값·사주·괘로 만든 사람별 숫자. 같은 사람이면 같은 값 */
+  seed: number;
 }
 
 export interface ReadingText {

@@ -3,7 +3,7 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 import type { Judgement, ReadingText } from '../types';
 
 /** 짧은 키: v 버전, h 헤드라인, s 요약, f [주형, 보조형], g [괘이름, 한자, 메시지], c [아이콘, 라벨, 별점, 본문, 조언][], p 역사 인물 id를 쉼표로 이은 것 "주형,보조형",
- *  k [사주 대표 기운, 괘의 위쪽, 동효] — 상생·상극·전생 카드를 휴대폰에서 다시 만든다. p, k는 예전 QR에 없을 수 있음 */
+ *  k [사주 대표 기운, 괘의 위쪽, 사람별 시드 % 360] — 상생·상극·전생 카드를 휴대폰에서 다시 만든다. p, k는 예전 QR에 없을 수 있음 */
 export interface SharePayload {
   v: 1;
   h: string;
@@ -24,7 +24,8 @@ export function toPayload(r: ReadingText, j: Judgement, figureIds: string[] = []
     g: [j.gwae.name, j.gwae.hanja, j.gwae.message],
     c: j.categories.map((c, i) => [c.icon, c.label, c.stars, r.categories[i]?.text ?? '', r.categories[i]?.tip ?? '']),
     ...(figureIds.length ? { p: figureIds.join(',') } : {}),
-    k: [j.saju.dominant, j.gwae.upper, j.gwae.movingLine],
+    // 사람별 시드는 짧게(360으로 나눈 나머지). 전생의 일 고르기(3가지)와 맞아떨어진다
+    k: [j.saju.dominant, j.gwae.upper, j.seed % 360],
   };
 }
 

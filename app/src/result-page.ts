@@ -43,7 +43,7 @@ if (!p) {
     h.append(`${icon} ${label}`, s);
     li.append(h);
     if (text) li.append(Object.assign(document.createElement('p'), { textContent: text }));
-    if (tip) li.append(Object.assign(document.createElement('p'), { className: 'tip', textContent: `💡 ${tip}` }));
+    if (tip) li.append(Object.assign(document.createElement('p'), { className: 'tip caution', textContent: `⚠️ 조심할 점 · ${tip}` }));
     return li;
   });
   const figs = picksFromIds(p.p ? p.p.split(',') : []).map(figureCard);

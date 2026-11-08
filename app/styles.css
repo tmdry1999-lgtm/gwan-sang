@@ -123,9 +123,20 @@ body {
 .cards p { margin: 0; color: var(--dim); }
 .cards .tip { margin-top: .75rem; color: var(--aqua); font-size: .95rem; }
 .cards .is-loading p { opacity: .5; }
+.cards .tip.caution { color: var(--danger); }
 .cards .figure { border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
 .cards .figure-basis { margin: 0 0 .25rem; color: var(--gold); font-size: .85rem; letter-spacing: .02em; }
 .cards .figure h3 { font-family: var(--serif); }
+.cards .figure-top { display: flex; gap: 1rem; align-items: flex-start; }
+.cards .figure-body { min-width: 0; flex: 1; }
+.cards .figure-portrait { margin: 0; flex: none; width: 96px; }
+.cards .figure-portrait img { display: block; width: 96px; height: 120px; object-fit: cover; object-position: top; border-radius: 10px; border: 1px solid var(--line); background: var(--void-2); }
+.cards .figure-portrait figcaption { margin-top: .3rem; color: var(--dim); font-size: .62rem; line-height: 1.35; opacity: .8; }
+.cards .figure-seal { flex: none; width: 96px; height: 120px; display: grid; place-items: center; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); color: var(--gold); font-family: var(--serif); font-size: 1.7rem; font-weight: 700; background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.cards .figure-others { margin-top: .9rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+.cards .figure-others ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .3rem; }
+.cards .figure-others li { padding: 0; animation: none; color: var(--dim); font-size: .9rem; }
+.cards .figure-others b { color: var(--ink); font-weight: 500; }
 .cards .pastlife .figure-basis { color: var(--aqua); }
 .cards .pastlife h3 { font-family: var(--serif); display: block; }
 .cards .relation-types { color: var(--gold); font-size: .95rem; font-weight: 500; }

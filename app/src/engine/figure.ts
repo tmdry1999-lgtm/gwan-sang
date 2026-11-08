@@ -12,11 +12,26 @@ export interface Figure {
   why: string;
   deed: string;
   gift: string;
+  /** 퍼블릭 도메인·자유 라이선스 이미지만. 없으면 이름 도장으로 그린다 */
+  image?: FigureImage;
 }
 
-const BY_TYPE = figures as unknown as Record<Ohaeng, Figure[]>;
+/** pos: 카드 틀에 맞춰 자를 때 보일 위치 (CSS object-position, 기본 위쪽 가운데) */
+export interface FigureImage { src: string; caption: string; credit: string; pos?: string }
 
-/** seed가 같으면 같은 인물 (괘의 동효를 넣어 체험마다 조금씩 달라지게) */
+/** 카드 아래 "같은 기운의 인물" 한 줄 소개 */
+export interface FigureBrief { name: string; years: string; deed: string }
+
+const BY_TYPE = figures as unknown as Record<Ohaeng, Figure[]>;
+const OTHERS = (figures as unknown as { others: Record<Ohaeng, FigureBrief[]> }).others;
+
+/** 같은 형의 다른 인물: 카드에 안 나온 대표 인물 + 더 보기 인물 (최대 4명) */
+export function othersOf(type: Ohaeng, shownId: string): FigureBrief[] {
+  const rest = BY_TYPE[type].filter((f) => f.id !== shownId).map(({ name, years, deed }) => ({ name, years, deed }));
+  return [...rest, ...OTHERS[type]].slice(0, 4);
+}
+
+/** seed가 같으면 같은 인물 (사람별 시드로 체험마다 달라지게) */
 export function pickFigure(type: Ohaeng, seed: number): Figure {
   const list = BY_TYPE[type];
   return list[Math.abs(Math.trunc(seed)) % list.length];
