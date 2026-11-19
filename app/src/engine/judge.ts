@@ -33,8 +33,14 @@ const LUCKY_COLOR = rules.luckyColor as Record<Ohaeng, string>;
 const CAUTIONS = rules.cautions as Record<CategoryKey, string[]>;
 
 const SAENG: Record<Ohaeng, Ohaeng> = { 목: '화', 화: '토', 토: '금', 금: '수', 수: '목' };
+// ── 조심할 점·별점 세기 조절 (wiki/tone-guide.md "조심할 점 쓰는 법") ──
 /** 조심할 점을 붙이는 운세 개수 (별점이 낮은 순) */
-const CAUTION_COUNT = 2;
+const CAUTION_COUNT = 3;
+/** 이 별점 이하인 운세는 개수와 상관없이 조심할 점을 붙인다 */
+const CAUTION_STARS = 3;
+/** 평균 얼굴의 별점 바탕값, 측정값이 별점에 미치는 정도 */
+const STAR_BASE = 3.25;
+const STAR_SLOPE = 0.7;
 
 /** 측정값·사주·괘 → 사람별 숫자 (FNV-1a). 같은 입력이면 같은 값 */
 export function personSeed(m: Measurements, saju: SajuResult, gwae: Gwae): number {
@@ -51,9 +57,9 @@ function signedZ(goodWhen: GoodWhen, z: number): number {
   return goodWhen === 'high' ? z : -z;
 }
 
-/** 별점 2–5, 0.5 단위. 평균이면 4개 */
+/** 별점 2–5, 0.5 단위. 평균이면 3.5개 */
 function starsOf(score: number, linked: boolean): number {
-  const raw = 3.75 + 0.6 * Math.max(-2.5, Math.min(2.5, score)) + (linked ? 0.5 : 0);
+  const raw = STAR_BASE + STAR_SLOPE * Math.max(-2.5, Math.min(2.5, score)) + (linked ? 0.5 : 0);
   return Math.min(5, Math.max(2, Math.round(raw * 2) / 2));
 }
 
@@ -109,11 +115,12 @@ export function judge(m: Measurements, baseline: Baseline, saju: SajuResult, gwa
     };
   });
 
-  // 재미로 보는 조심할 점: 별점이 낮은 운세 둘 (같으면 사람마다 다른 순서)
+  // 재미로 보는 조심할 점: 별점이 낮은 운세 셋 + 별 3개 이하 전부 (별점이 같으면 사람마다 다른 순서)
   const order = categories
     .map((c, i) => ({ c, tie: (seed >>> i) % 7 }))
     .sort((a, b) => a.c.stars - b.c.stars || a.tie - b.tie);
-  for (const { c } of order.slice(0, CAUTION_COUNT)) {
+  const needCaution = order.filter(({ c }, i) => i < CAUTION_COUNT || c.stars <= CAUTION_STARS);
+  for (const { c } of needCaution) {
     const pool = CAUTIONS[c.key];
     if (!c.caution && pool?.length) c.caution = pool[c.variant % pool.length];
   }

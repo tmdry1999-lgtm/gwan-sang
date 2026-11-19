@@ -45,12 +45,22 @@ describe('judge', () => {
     expect(wealth.caution).toContain('계획');
   });
 
-  it('누구나 별점 낮은 운세 둘에 조심할 점이 붙는다', () => {
+  it('누구나 별점 낮은 운세 셋 이상에 조심할 점이 붙는다', () => {
     const offNose = { ...avg, m14: B.m14.mean - 2 * B.m14.sd, m08: B.m08.mean - 2 * B.m08.sd };
     const j = judge(offNose, B, saju('수'), gwae);
     const withCaution = j.categories.filter((c) => c.caution);
-    expect(withCaution.length).toBeGreaterThanOrEqual(2);
+    expect(withCaution.length).toBeGreaterThanOrEqual(3);
     expect(withCaution.map((c) => c.key)).toEqual(expect.arrayContaining(['wealth', 'people']));
+  });
+
+  it('별 3개 이하인 운세는 모두 조심할 점이 있다', () => {
+    const low = { ...avg, m14: B.m14.mean - 2 * B.m14.sd, m08: B.m08.mean - 2 * B.m08.sd, m02: B.m02.mean - 2 * B.m02.sd, m12: B.m12.mean - 2 * B.m12.sd };
+    for (const c of judge(low, B, saju('수'), gwae).categories) if (c.stars <= 3) expect(c.caution).not.toBeNull();
+  });
+
+  it('평균 얼굴은 별 3.5개 안팎 (4개 이상만 나오지 않는다)', () => {
+    const stars = judge(avg, B, saju('수'), { ...gwae, upper: '리', lower: '리' }).categories.map((c) => c.stars);
+    expect(Math.min(...stars)).toBeLessThanOrEqual(3.5);
   });
 
   it('사람이 다르면 결과도 달라진다 (시드)', () => {
